@@ -26,7 +26,7 @@ no_subnets = True
 
 experiment_top_path = './no_subnets/'
 
-plat = platform.linux_distribution()[0]
+plat = platform.uname()[0]
 #plat = 'not_arch'
 if plat == 'arch': 
     print('platform: arch')
@@ -35,8 +35,16 @@ elif plat == 'debian':
     py_env = '../../anaconda3/bin/python'
 else:
     print('platform: '+plat)
-    py_env='/home/mroddy/anaconda3/envs/py36/bin/python'
+    #py_env='/home/mroddy/anaconda3/envs/py36/bin/python'
+    which_py=os.popen('which python')
+    py_env=which_py.read().strip()
+    print("python: ", py_env, repr(py_env))
 
+if not os.path.isfile(py_env):
+    print(os.path.isfile(py_env))
+    print("Python environment isn't correct activated: currently using this python", py_env) 
+    print("You'll need to change it so it matches your actual environment") 
+    raise SystemExit
 
 
 #%% Common settings for all experiments
@@ -44,7 +52,10 @@ else:
 early_stopping = True
 patience = 10
 slow_test = True
-num_epochs = 1500
+
+## CHANGED FOR DEBUGGING
+num_epochs = 3 
+#num_epochs = 1500
 train_list_path = './data/splits/training.txt'
 test_list_path = './data/splits/testing.txt'
 # train_list_path = './data/splits/training_dev_small.txt'
@@ -208,7 +219,7 @@ Acous_10ms_Ling_10ms = {
 
 #%% Experiments list
 
-gpu_select = 0
+gpu_select = os.environ['CUDA_VISIBLE_DEVICES']  
 test_indices = [0,1,2,3,4]
 
 experiment_name_list = [
@@ -312,13 +323,14 @@ def run_trial(parameters):
             json_dict=json.dumps(json_dict)
             arg_list = [json_dict]
 #            cuda_var = randint(0,cuda_int)
-            my_env = {'CUDA_VISIBLE_DEVICES':str(gpu_select)}
+            #my_env = {'CUDA_VISIBLE_DEVICES':str(gpu_select)}
             command = [py_env, './run_json.py'] + arg_list
             print(command)
             print('\n *** \n')
             print(test_path+name_append_test)
             print('\n *** \n')
-            response=subprocess.run(command,stderr=subprocess.PIPE,env=my_env)
+            #response=subprocess.run(command,stderr=subprocess.PIPE,env=my_env)
+            response=subprocess.run(command,stderr=subprocess.PIPE)
             print(response.stderr)
 #            sys.stderr.write(response.stderr)
 
