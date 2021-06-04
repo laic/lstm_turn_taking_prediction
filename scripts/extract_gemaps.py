@@ -12,11 +12,11 @@ else:
 if speed_setting == 0:
     output_files_dir = './data/signals/gemaps_features_50ms/'
     # smile_command = 'SMILExtract -C ./opensmile-2.3.0/config/gemaps_50ms/eGeMAPSv01a.conf'
-    smile_command = './utils/opensmile-2.3.0/bin/linux_x64_standalone_static/SMILExtract -C ./utils/opensmile-2.3.0/config/gemaps_50ms/eGeMAPSv01a.conf'
+    smile_command = './utils/opensmile/bin/SMILExtract -C ./utils/opensmile/config/gemaps_50ms/eGeMAPSv01a.conf'
 else:
     output_files_dir = './data/signals/gemaps_features_10ms/'
     # smile_command = 'SMILExtract -C ./opensmile-2.3.0/config/gemaps_10ms/eGeMAPSv01a.conf'
-    smile_command = './utils/opensmile-2.3.0/bin/linux_x64_standalone_static/SMILExtract -C ./utils/opensmile-2.3.0/config/gemaps_10ms/eGeMAPSv01a.conf'
+    smile_command = './utils/opensmile/bin/SMILExtract -C ./utils/opensmile/config/gemaps_10ms/eGeMAPSv01a.conf'
 
 
 audio_files_dir = './data/signals/dialogues_mono/'
