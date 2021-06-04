@@ -179,7 +179,7 @@ lstm_settings_dict = {
 }
 
 # %% Get OS type and whether to use cuda or not
-plat = platform.linux_distribution()[0]
+plat = platform.uname()[0]
 my_node = platform.node()
 
 if (plat == 'arch') | (my_node == 'Matthews-MacBook-Pro.local'):
@@ -579,9 +579,26 @@ for pause_str in pause_str_list + overlap_str_list + onset_str_list:
 results_save['train_losses'], results_save['test_losses'], results_save['indiv_perf'], results_save[
     'test_losses_l1'] = [], [], [], []
 
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('Using device:', device)
 # %% Training
 for epoch in range(0, num_epochs):
+
+    ## Some debug code for checking if you're actually using the GPU you think you are
+    ## This will slow down your code a lot, so leave it commented unless you need
+    ## to check something
+#    print("Current device:", torch.cuda.current_device()) 
+#    nvidiacheck = os.popen('nvidia-smi')
+#    print(nvidiacheck.read())
+#    cudacheck = os.popen('echo $CUDA_VISIBLE_DEVICES')
+#    print("CUDA_VISIBLE_DEVICES", cudacheck.read())
+#    if device.type == 'cuda':
+#        print(torch.cuda.get_device_name())
+#        print('Memory Usage:')
+#        print('Allocated:', round(torch.cuda.memory_allocated(0)/1024**3,5), 'GB')
+#        print('Cached:   ', round(torch.cuda.memory_reserved(0)/1024**3,5), 'GB')
+
+
     model.train()
     t_epoch_strt = t.time()
     loss_list = []
